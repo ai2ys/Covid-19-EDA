@@ -19,7 +19,7 @@ def get_world_population_from_wiki():
     return df_population.loc[:, ['Country or area', 'Population(1 July 2019)']]
 
 def get_csse_covid19_countries():
-    countries = Csse_covid19.Active.df_raw.groupby(by=['Country/Region']).sum().index.tolist()   
+    countries = Csse_covid19.Confirmed.df_raw.groupby(by=['Country/Region']).sum().index.tolist()   
     df_countries = pd.DataFrame(columns=['Csse Covid-19 countries'], data=countries)
     df_countries.sort_values(by='Csse Covid-19 countries', inplace=True)
     return df_countries
