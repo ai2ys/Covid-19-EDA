@@ -17,6 +17,8 @@ import datetime
 import math
 from enum import Enum
 
+from IPython.display import display
+
 class ScaleType(Enum):
     Linear=("linear", 1, 0)
     Log_10=("log", 10, 1)
@@ -92,16 +94,16 @@ class Csse_covid19(Enum):
     def __add_population(self, df_countries_population): 
         for index, row in df_countries_population.iterrows():
             country_csse = row['Csse Covid-19 countries']      
-        if country_csse != np.NaN:
-            count = row['Population(1 July 2019)']
-            self.df_raw.loc[
-              self.df_raw['Country/Region']==country_csse, 
-              'Population(1 July 2019)'] = count
+            if country_csse != np.NaN:
+                count = row['Population(1 July 2019)']
+                self.df_raw.loc[
+                  self.df_raw['Country/Region']==country_csse, 
+                  'Population(1 July 2019)'] = count
 
     def alt_plot(self, countries=None, width=800, height=600, 
                 sort_legend=False, scale_type=ScaleType.Linear, 
                 normalize_by_population=False,
-                file_path=None, display=True, day_delta=0):
+                file_path=None, show=True, day_delta=0):
         if 'Population(1 July 2019)' not in self.df_raw.columns:
             Csse_covid19.add_population('merged_countries_population_nan.csv')      
         source = self.df_raw
@@ -117,7 +119,7 @@ class Csse_covid19(Enum):
         source = source.reset_index().rename(columns={0:'Count'})
         if normalize_by_population:
             source['Count'] /= source['Population(1 July 2019)'] * 1e-6
-
+            source['Count'] = source['Count'].round(3)
         first_date_str = source.iloc[0]['Date'] 
         last_date_str = source.iloc[-1]['Date']
         first_date = datetime.datetime.strptime(first_date_str, "%m/%d/%y")
@@ -138,7 +140,7 @@ class Csse_covid19(Enum):
         if sort_legend:
             sort = self.get_countries_sorted(countries)
         if normalize_by_population:
-            title_y = 'Count per million'
+            title_y = 'Count/per million (population)'
             title += ', normalized per million of the population'
         color = alt.Color('Country/Region', sort=sort)                    
         line = alt.Chart(source).transform_filter( 
@@ -173,7 +175,7 @@ class Csse_covid19(Enum):
 
         if file_path is not None:
             layer.save(file_path)
-        if display:
+        if show:
             layer.display()
         return layer #layer.display()
 

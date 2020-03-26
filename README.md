@@ -1,7 +1,7 @@
-# Covid-19-EDA
+# Covid-19 EDA
 Covid-19 EDA, plots tell more than just numbers.
 
-Using the John Hopkins CSSE COVID-19 data: https://github.com/CSSEGISandData/COVID-19 <br>
+Using the Johns Hopkins CSSE COVID-19 data: https://github.com/CSSEGISandData/COVID-19 <br>
 
 ## Top 10 - absolute numbers
 The top 10 affected countries regarding absolute numbers of confirmed Covid-19 infections and deaths due to Covid-19 infections.
@@ -35,7 +35,7 @@ The first plot can be manipulated using interactive controls
     * Confirmed cases
     * Deaths
 * Top X
-    * Plotting the reported cases of the X (here: 10) countries with the highest absolute case numbers
+    * Plotting the reported cases of the X (here: 10) countries with the highest absolute number of reported cases
 * Y scale
     * Linear
     * Logatrithmic using base 10
