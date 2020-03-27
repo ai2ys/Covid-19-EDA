@@ -2,9 +2,12 @@
 Covid-19 EDA, plots tell more than just numbers.
 
 Using the Johns Hopkins CSSE COVID-19 data: https://github.com/CSSEGISandData/COVID-19 <br>
+Using list of countries by population from Wikipedia: https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)
 
 ## Top 10 - absolute numbers
-The top 10 affected countries regarding absolute numbers and normalized numbers (per millions of the population in the specified country, 2019) of confirmed Covid-19 infections and deaths due to Covid-19 infections. 
+The top 10 affected countries regarding absolute numbers of confirmed Covid-19 infections and deaths due to Covid-19 infections. 
+A second diagram is showing the same 10 countries normalizing the case numbers by the population (per millions of the population in the specified country, 2019)
+
 ### Confirmed cases logarithmic scale
 ![](./Confirmed_top10_Log_10.svg)
 ![](./Confirmed_top10_Log_10_normalized.svg)
