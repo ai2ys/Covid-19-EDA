@@ -21,9 +21,9 @@ from IPython.display import display
 
 class ScaleType(Enum):
     Linear=("linear", 1, 0)
-    Log_10=("log", 10, 1)
-    Log_2=("log", 2, 1)
-    Log_e=("log",  math.exp(1), 1)
+    Log_10=("log", 10, 0)
+    Log_2=("log", 2, 0)
+    Log_e=("log",  math.exp(1), 0)
     def __init__(self, scale_type, log_base, threshold):
         self.scale_type = scale_type
         self.log_base=log_base
@@ -144,7 +144,7 @@ class Csse_covid19(Enum):
             title += ', normalized per million of the population'
         color = alt.Color('Country/Region', sort=sort)                    
         line = alt.Chart(source).transform_filter( 
-            alt.datum.Count >= scale_type.threshold).mark_line().encode(
+            alt.datum.Count > scale_type.threshold).mark_line().encode(
             alt.X('Date:T', scale=alt.Scale(domain=date_range), axis=alt.Axis(format = ("%d %b %Y"), labelAngle=90)), 
             alt.Y('Count:Q', scale=scale, axis=alt.Axis(orient='right', title=title_y)), 
             color

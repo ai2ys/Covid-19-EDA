@@ -4,9 +4,21 @@ Covid-19 EDA, plots tell more than just numbers.
 Using the Johns Hopkins CSSE COVID-19 data: https://github.com/CSSEGISandData/COVID-19 <br>
 
 ## Top 10 - absolute numbers
-The top 10 affected countries regarding absolute numbers of confirmed Covid-19 infections and deaths due to Covid-19 infections.
+The top 10 affected countries regarding absolute numbers and normalized numbers (per millions of the population in the specified country, 2019) of confirmed Covid-19 infections and deaths due to Covid-19 infections. 
+### Confirmed cases logarithmic scale
 ![](./Confirmed_top10_Log_10.svg)
+![](./Confirmed_top10_Log_10_normalized.svg)
+### Confirmed cases linear scale
+![](./Confirmed_top10_Linear.svg)
+![](./Confirmed_top10_Linear_normalized.svg)
+
+### Deaths logarithmic scale
 ![](./Deaths_top10_Log_10.svg)
+![](./Deaths_top10_Log_10_normalized.svg)
+### Deaths linear scale
+![](./Deaths_top10_Linear.svg)
+![](./Deaths_top10_Linear_normalized.svg)
+
 
 ---
 # Installation of the requirements using Miniconda
