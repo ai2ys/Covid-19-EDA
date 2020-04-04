@@ -14,6 +14,8 @@ import pandas as pd
 import numpy as np
 import datetime
 
+from altair_saver import save
+import os
 import math
 from enum import Enum
 
@@ -32,8 +34,8 @@ class ScaleType(Enum):
 class Covid19_status(Enum):
     Confirmed=(0)
     Deaths=(1)
-    #Recovered=(2)
-    #Active=(3)
+    Recovered=(2)
+    Active=(3)
     #Merged=(4)
 
     def __init__(self, idx):
@@ -44,9 +46,9 @@ class Csse_covid19(Enum):
                 'https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
     Deaths = (Covid19_status.Deaths, 
               'https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
-    #Recovered = (Covid19_status.Recovered,
-    #             'https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv')
-    #Active = (Covid19_status.Active, None)
+    Recovered = (Covid19_status.Recovered,
+              'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
+    Active = (Covid19_status.Active, None)
     #Merged = (Covid19_status.Merged, None)
 
     def __init__(self, status, url):
@@ -56,28 +58,28 @@ class Csse_covid19(Enum):
         self.df_raw = None
         self.df_pop = None 
         self.re_date='^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,2}$'    
-        self.df_raw = pd.read_csv(self.url, header=0, sep=',')
-        self.date_cols = self.df_raw.filter(regex=self.re_date).columns.values    
-        print(self.status)
-        #if self.status == Covid19_status.Active:
-        #  self.df_raw = self.Confirmed.df_raw.copy()
-        #  self.date_cols = self.df_raw.filter(regex=self.re_date).columns.values 
-        #  self.df_raw[self.date_cols] = self.df_raw[self.date_cols].sub(
-        #      self.Recovered.df_raw[self.date_cols]).sub(
-        #          self.Deaths.df_raw[self.date_cols])
-        #elif self.status is Covid19_status.Merged:
-        #  cols = self.Confirmed.df_raw.columns.values.tolist()
-        #  cols.insert(0,'Status')
-        #  self.df_raw = pd.DataFrame(columns=cols)
-        #  for status in Covid19_status:
-        #    if status is Covid19_status.Merged:
-        #      continue
-        #    df = status.csse.df_raw.copy()
-        #    df['Status'] = status.name
-        #    self.df_raw = self.df_raw.append(df, sort=False, ignore_index=True)      
-        #else:
-        #  self.df_raw = pd.read_csv(self.url)
-        #  self.date_cols = self.df_raw.filter(regex=self.re_date).columns.values
+        #self.df_raw = pd.read_csv(self.url, header=0, sep=',')
+        #self.date_cols = self.df_raw.filter(regex=self.re_date).columns.values    
+        #print(self.status)
+        if self.status == Covid19_status.Active:
+            self.df_raw = self.Confirmed.df_raw.copy()
+            self.date_cols = self.df_raw.filter(regex=self.re_date).columns.values 
+            self.df_raw[self.date_cols] = self.df_raw[self.date_cols].sub(
+            self.Recovered.df_raw[self.date_cols]).sub(
+                self.Deaths.df_raw[self.date_cols])
+        #lif self.status is Covid19_status.Merged:
+        #   cols = self.Confirmed.df_raw.columns.values.tolist()
+        #   cols.insert(0,'Status')
+        #   self.df_raw = pd.DataFrame(columns=cols)
+        #   for status in Covid19_status:
+        #       if status is Covid19_status.Merged:
+        #           continue
+        #       df = status.csse.df_raw.copy()
+        #       df['Status'] = status.name
+        #       self.df_raw = self.df_raw.append(df, sort=False, ignore_index=True)      
+        else:
+            self.df_raw = pd.read_csv(self.url)
+            self.date_cols = self.df_raw.filter(regex=self.re_date).columns.values
     
     @staticmethod
     def get_names():
@@ -103,9 +105,9 @@ class Csse_covid19(Enum):
     def alt_plot(self, countries=None, width=800, height=600, 
                 sort_legend=False, scale_type=ScaleType.Linear, 
                 normalize_by_population=False,
-                file_path=None, show=True, day_delta=0):
+                show=True, day_delta=0):
         if 'Population(1 July 2019)' not in self.df_raw.columns:
-            Csse_covid19.add_population('merged_countries_population_nan.csv')      
+            Csse_covid19.add_population('./csv/merged_countries_population_nan.csv')      
         source = self.df_raw
         if countries is not None:
             source = source.loc[source['Country/Region'].isin(countries)]
@@ -173,11 +175,9 @@ class Csse_covid19(Enum):
                           points, rules, text,
         ).properties(width=width, height=height)    
 
-        if file_path is not None:
-            layer.save(file_path)
         if show:
             layer.display()
-        return layer #layer.display()
+        return layer
 
     def get_top_countries(self, top=10):
         date = self.df_raw.filter(regex=self.re_date).columns.values[-1]

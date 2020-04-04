@@ -25,8 +25,10 @@ def get_csse_covid19_countries():
     return df_countries
 
 def export_csv():
-    get_world_population_from_wiki().to_csv('world_population_by_countries.csv')
-    get_csse_covid19_countries().to_csv('csse_covid19_countries.csv')
+    get_world_population_from_wiki().to_csv(
+        './csv/world_population_by_countries.csv')
+    get_csse_covid19_countries().to_csv(
+        './csv/csse_covid19_countries.csv')
 
 export_csv()
 #def merge_world_population_csse_countries(merged_csv_path):

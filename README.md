@@ -9,22 +9,26 @@ The top 10 affected countries regarding absolute numbers of confirmed Covid-19 i
 A second diagram is showing the same 10 countries normalizing the case numbers by the population (per millions of the population in the specified country, 2019)
 
 ### Confirmed cases logarithmic scale
-![](./Confirmed_top10_Log_10.svg)
-![](./Confirmed_top10_Log_10_normalized.svg)
+![](./plots/Confirmed_top10_Log_10.svg)
+![](./plots/Confirmed_top10_Log_10_normalized.svg)
 ### Confirmed cases linear scale
-![](./Confirmed_top10_Linear.svg)
-![](./Confirmed_top10_Linear_normalized.svg)
+![](./plots/Confirmed_top10_Linear.svg)
+![](./plots/Confirmed_top10_Linear_normalized.svg)
 
 ### Deaths logarithmic scale
-![](./Deaths_top10_Log_10.svg)
-![](./Deaths_top10_Log_10_normalized.svg)
+![](./plots/Deaths_top10_Log_10.svg)
+![](./plots/Deaths_top10_Log_10_normalized.svg)
 ### Deaths linear scale
-![](./Deaths_top10_Linear.svg)
-![](./Deaths_top10_Linear_normalized.svg)
+![](./plots/Deaths_top10_Linear.svg)
+![](./plots/Deaths_top10_Linear_normalized.svg)
 
 
 ---
+# Docker container
+In case you like to run the scripts from a Docker container have alook at [./docker/README.md](./docker/README.md). The scripts for building the docker image and running the container were created on a system running Ubuntu 18.04.
+
 # Installation of the requirements using Miniconda
+In case you like to run the scripts from a virual environment (currently only tested on Windows)
 1. Install Miniconda with Python 3.7 or later [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
 2. OS dependent
     * Linux &rarr; Open a terminal window

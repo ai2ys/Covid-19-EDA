@@ -1,0 +1,87 @@
+FROM python:3.7-buster
+
+LABEL maintainer="Sylvia Schmitt"
+
+ARG USERNAME
+RUN echo ${USERNAME}
+#ARG USERNAME=vscode
+ARG USER_UID
+#ARG USER_UID=1000
+ARG USER_GID
+#ARG USER_GID=$USER_UID
+ENV HOMEDIR=/home/${USERNAME}
+
+# Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+# [Optional] Set the default user. Omit if you want to keep the default as root.
+#USER $USERNAME
+
+WORKDIR /
+
+# nano editor
+RUN apt-get update -y \
+    && apt-get install -y apt-utils nano \
+    && apt-get autoremove -y \  
+    && apt-get autoclean -y \  
+    && rm -rf /var/lib/apt/lists/*  
+
+# upgrade pip
+RUN pip3 install --upgrade pip
+
+# tabnine & jupyterlab & jupyterlab-debugger
+RUN apt-get update -y \
+    && apt-get install -y nodejs npm \
+    && pip3 install --no-cache-dir nodejs npm \
+    && pip3 install --no-cache-dir jupyter jupyterlab jupyter-tabnine \
+    && jupyter nbextension install --py jupyter_tabnine \
+    && jupyter nbextension enable --py jupyter_tabnine \
+    && jupyter serverextension enable --py jupyter_tabnine \
+    && jupyter labextension install @jupyterlab/debugger \
+    && apt-get autoremove -y \  
+    && apt-get autoclean -y \  
+    && rm -rf /var/lib/apt/lists/*    
+
+# ipywidgets
+RUN apt-get update -y \
+    && apt-get install -y nodejs npm \
+    && pip3 install --no-cache-dir nodejs npm \
+    && pip3 install --no-cache-dir ipywidgets ipympl \
+    && jupyter nbextension enable --py widgetsnbextension \
+    && jupyter labextension install @jupyter-widgets/jupyterlab-manager \
+    && apt-get autoremove -y \  
+    && apt-get autoclean -y \  
+    && rm -rf /var/lib/apt/lists/*
+
+# altair-saver requirements - selenium and chromedriver or geckodriver
+# https://github.com/altair-viz/altair_saver/blob/master/AltairSaver.ipynb
+RUN apt-get update -y \
+    && apt-get install -y \
+        chromium \
+        chromium-driver \
+    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get autoremove -y \  
+    && apt-get autoclean -y \  
+    && rm -rf /var/lib/apt/lists/*
+RUN npm -g config set user root \
+    && npm install -g vega-lite vega-cli canvas 
+
+ENV PATH="/usr/bin/chromedriver:${PATH}"
+
+# python libs from requirements
+COPY requirements.txt /tmp/
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+
+RUN mkdir -p /workspace && chmod -R a+rwx /workspace/ 
+RUN mkdir /.local && chmod a+rwx /.local
+WORKDIR /workspace
+
+EXPOSE 8888
+CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter lab --notebook-dir=/workspace --ip 0.0.0.0 --no-browser --allow-root"]
