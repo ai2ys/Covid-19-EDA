@@ -40,7 +40,7 @@ In case you like to run the scripts from a virual environment (currently only te
     ```
 5. Install the required libraries using the [requirements.txt](requirements.txt) file
     ```bash
-    pip install -r requirements
+    pip install -r ./docker/requirements
     ```
 6. Start Jupyter-Lab
     ```bash
