@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  testeda:
+    image: ai2ys/jupyterlab:covid19eda
+    user: $USER
+    working_dir: /workspace    
+    build:
+        context: .
+        dockerfile: dockerfile
+        args: 
+            - USER_NAME=$USER
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../:/workspace

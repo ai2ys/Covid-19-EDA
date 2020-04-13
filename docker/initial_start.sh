@@ -4,7 +4,7 @@
 targetport="8888"
 containername="covid19_eda"
 #------------------------------------
-imagename="ai2ys/jupyterlab:covid19eda"
+imagename="ai2ys/jupyterlab:testeda"
 workdir="/workspace"
 username="$USER"
 groupID="$(id -g)"

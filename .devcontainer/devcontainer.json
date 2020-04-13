@@ -1,0 +1,13 @@
+
+{   
+    "name":"covid19_eda",
+    "dockerComposeFile": "${localWorkspaceFolder}/docker/docker-compose.yml",
+    "service": "testeda",
+    "workspaceFolder": "${localWorkspaceFolder}",
+    "shutdownAction": "stopCompose",
+
+    "settings":{
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "python.pythonPath": "/usr/local/bin/python"
+    }
+}

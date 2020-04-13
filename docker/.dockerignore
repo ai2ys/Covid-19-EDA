@@ -1,2 +1,5 @@
 build.sh
 start.sh
+initial_start.sh
+attach.sh
+stop_kill_all.sh
