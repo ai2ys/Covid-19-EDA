@@ -42,30 +42,6 @@ RUN apt-get update -y \
 # upgrade pip
 RUN pip3 install --upgrade pip
 
-# tabnine & jupyterlab & jupyterlab-debugger
-RUN apt-get update -y \
-    && apt-get install -y nodejs npm \
-    && pip3 install --no-cache-dir nodejs npm \
-    && pip3 install --no-cache-dir jupyter jupyterlab jupyter-tabnine \
-    && jupyter nbextension install --py jupyter_tabnine \
-    && jupyter nbextension enable --py jupyter_tabnine \
-    && jupyter serverextension enable --py jupyter_tabnine \
-    && jupyter labextension install @jupyterlab/debugger \
-    && apt-get autoremove -y \  
-    && apt-get autoclean -y \  
-    && rm -rf /var/lib/apt/lists/*    
-
-# ipywidgets
-RUN apt-get update -y \
-    && apt-get install -y nodejs npm \
-    && pip3 install --no-cache-dir nodejs npm \
-    && pip3 install --no-cache-dir ipywidgets ipympl \
-    && jupyter nbextension enable --py widgetsnbextension \
-    && jupyter labextension install @jupyter-widgets/jupyterlab-manager \
-    && apt-get autoremove -y \  
-    && apt-get autoclean -y \  
-    && rm -rf /var/lib/apt/lists/*
-
 # altair-saver requirements - selenium and chromedriver or geckodriver
 # https://github.com/altair-viz/altair_saver/blob/master/AltairSaver.ipynb
 RUN apt-get update -y \
@@ -79,8 +55,32 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 RUN npm -g config set user root \
     && npm install -g vega-lite vega-cli canvas 
-
 ENV PATH="/usr/bin/chromedriver:${PATH}"
+
+# tabnine & jupyterlab & jupyterlab-debugger...
+RUN apt-get update -y \
+    #prerequisites
+    #&& apt-get install -y nodejs npm \ #already installed
+    && pip3 install --no-cache-dir nodejs npm ipympl \
+    #jupyter lab
+    && pip3 install --no-cache-dir jupyter jupyterlab \
+    #tabnine 
+    #&& pip3 install --no-cache-dir jupyter-tabnine \
+    #&& jupyter nbextension install --py jupyter_tabnine \
+    #&& jupyter nbextension enable --py jupyter_tabnine \
+    #&& jupyter serverextension enable --py jupyter_tabnine \
+    #ipywidgets
+    && pip3 install --no-cache-dir ipywidgets \ 
+    && jupyter nbextension enable --py widgetsnbextension \
+    && jupyter labextension install @jupyter-widgets/jupyterlab-manager \
+    #clean&build
+    && jupyter lab clean \
+    && jupyter lab build \
+    #clean up    
+    && apt-get autoremove -y \  
+    && apt-get autoclean -y \  
+    && rm -rf /var/lib/apt/lists/*    
+
 
 # python libs from requirements
 COPY requirements.txt /tmp/

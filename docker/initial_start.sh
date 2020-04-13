@@ -4,17 +4,22 @@
 targetport="8888"
 containername="covid19_eda"
 #------------------------------------
-imagename="ai2ys/jupyterlab:testeda"
+imagename="ai2ys/jupyterlab:covid19eda"
 workdir="/workspace"
-username="$USER"
-groupID="$(id -g)"
-userID="$(id -u)"
 
+
+var="$1"
+if [ ! -n "$var" ]
+then
+	user=$USER
+else
+	user=$var
+fi
 cd `dirname $0`
 
 docker run \
-    --user $userID:$groupID \
-    --env USER=${username} \
+    --user $(id -u $user):$(id -g $user) \
+    --env USER=${user} \
     --name ${containername} \
     --workdir=${workdir} \
     --volume $(realpath ../):${workdir}/ \
