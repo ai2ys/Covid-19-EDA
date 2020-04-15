@@ -65,10 +65,10 @@ RUN apt-get update -y \
     #jupyter lab
     && pip3 install --no-cache-dir jupyter jupyterlab \
     #tabnine 
-    #&& pip3 install --no-cache-dir jupyter-tabnine \
-    #&& jupyter nbextension install --py jupyter_tabnine \
-    #&& jupyter nbextension enable --py jupyter_tabnine \
-    #&& jupyter serverextension enable --py jupyter_tabnine \
+    && pip3 install --no-cache-dir jupyter-tabnine \
+    && jupyter nbextension install --py jupyter_tabnine \
+    && jupyter nbextension enable --py jupyter_tabnine \
+    && jupyter serverextension enable --py jupyter_tabnine \
     #ipywidgets
     && pip3 install --no-cache-dir ipywidgets \ 
     && jupyter nbextension enable --py widgetsnbextension \
