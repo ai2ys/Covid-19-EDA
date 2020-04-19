@@ -3,9 +3,10 @@
     "name":"covid19_eda",
     "dockerComposeFile": "${localWorkspaceFolder}/docker/docker-compose.yml",
     "service": "testeda",
-    "workspaceFolder": "${localWorkspaceFolder}",
+    "workspaceFolder": "/workspace", //"${localWorkspaceFolder}",
     "shutdownAction": "stopCompose",
-
+    //"remoteUser": "$USER",
+    "extensions": ["ms-python.python"],
     "settings":{
         "terminal.integrated.shell.linux": "/bin/bash",
         "python.pythonPath": "/usr/local/bin/python"

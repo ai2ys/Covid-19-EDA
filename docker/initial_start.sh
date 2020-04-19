@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #adjust to your needs
-targetport="8888"
+targetport="8887"
 containername="covid19_eda"
 #------------------------------------
 imagename="ai2ys/jupyterlab:covid19eda"
@@ -18,10 +18,14 @@ fi
 cd `dirname $0`
 
 docker run \
-    --user $(id -u $user):$(id -g $user) \
+    --rm \
+    --tty \
+    --user $USER \
     --env USER=${user} \
     --name ${containername} \
     --workdir=${workdir} \
     --volume $(realpath ../):${workdir}/ \
     --publish=8888:${targetport} \
     ${imagename}
+
+    #--user $(id -u $user):$(id -g $user) \
