@@ -99,7 +99,7 @@ class Csse_covid19(Enum):
             if country_csse != np.NaN:
                 count = row['Population(1 July 2019)']
                 self.df_raw.loc[
-                  self.df_raw['Country/Region']==country_csse, 
+                  (self.df_raw['Country/Region']==country_csse) & (self.df_raw['Province/State'].isnull()), 
                   'Population(1 July 2019)'] = count
 
     def alt_plot(self, countries=None, width=800, height=600, 
@@ -120,6 +120,7 @@ class Csse_covid19(Enum):
         source.index.set_names('Date', level=len(source.index.names)-1, inplace=True)
         source = source.reset_index().rename(columns={0:'Count'})
         if normalize_by_population:
+            print(source['Population(1 July 2019)'])
             source['Count'] /= source['Population(1 July 2019)'] * 1e-6
             source['Count'] = source['Count'].round(3)
         first_date_str = source.iloc[0]['Date'] 
